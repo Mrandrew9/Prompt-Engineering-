@@ -1,0 +1,8 @@
+jinja2
+pyyaml
+jsonschema
+pytest
+pytest-cov
+ruff
+black
+tabulate
