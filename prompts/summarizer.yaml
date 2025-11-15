@@ -1,0 +1,16 @@
+name: summarizer
+description: Summarize customer support tickets with tone control.
+input_schema:
+  type: object
+  required: [body, tone]
+  properties:
+    body: { type: string, minLength: 10 }
+    tone: { type: string, enum: [neutral, friendly, formal] }
+template: |
+  You are a helpful assistant. Use a {{ tone }} tone.
+  Summarize this text in 3 bullet points:
+  ---
+  {{ body }}
+tests:
+  - id: test1
+    input: { body: "User cannot login after reset.", tone: "friendly" }
