@@ -1,4 +1,7 @@
-import pathlib, yaml
+import pathlib
+
+import yaml
+
 
 def test_prompts_have_required_fields():
     for pf in pathlib.Path("prompts").glob("*.y*ml"):

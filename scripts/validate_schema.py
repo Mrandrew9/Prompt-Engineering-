@@ -1,4 +1,8 @@
-import sys, pathlib, yaml, jsonschema
+import pathlib
+import sys
+
+import jsonschema
+import yaml
 
 PROMPT_SCHEMA = {
     "type": "object",
@@ -13,6 +17,7 @@ PROMPT_SCHEMA = {
     "additionalProperties": True,
 }
 
+
 def main():
     root = pathlib.Path("prompts")
     errors = 0
@@ -20,12 +25,13 @@ def main():
         try:
             data = yaml.safe_load(f.read_text(encoding="utf-8"))
             jsonschema.validate(data, PROMPT_SCHEMA)
-        except Exception as e:
+        except (OSError, yaml.YAMLError, jsonschema.ValidationError) as e:
             print(f"❌ {f}: {e}")
             errors += 1
         else:
             print(f"✅ {f} validated")
     sys.exit(1 if errors else 0)
+
 
 if __name__ == "__main__":
     main()

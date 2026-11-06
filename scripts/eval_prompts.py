@@ -1,12 +1,17 @@
-import pathlib, yaml, jinja2
+import pathlib
+
+import jinja2
+import yaml
 from tabulate import tabulate
 
 PROMPTS = pathlib.Path("prompts")
 REPORT = pathlib.Path("eval_report.md")
 
+
 def render(template: str, ctx: dict):
     env = jinja2.Environment(autoescape=False, undefined=jinja2.StrictUndefined)
     return env.from_string(template).render(**ctx)
+
 
 def main():
     rows = []
@@ -24,6 +29,7 @@ def main():
     table = tabulate(rows, headers=["Prompt", "WordCount", "Result"], tablefmt="github")
     REPORT.write_text(f"# Prompt Evaluation Report\n\n{table}\n", encoding="utf-8")
     print(table)
+
 
 if __name__ == "__main__":
     main()
