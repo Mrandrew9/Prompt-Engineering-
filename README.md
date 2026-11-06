@@ -1,6 +1,8 @@
 # 🤖 Prompt Engineering CI/CD
 
 ![prompt-ci](https://github.com/Mrandrew9/Prompt-Engineering-/actions/workflows/prompt-ci.yml/badge.svg)
+![Python 3.11](https://img.shields.io/badge/python-3.11-3776AB?logo=python&logoColor=white)
+![License: MIT](https://img.shields.io/badge/license-MIT-green)
 
 Treat LLM prompts like code: version them, validate them against a schema, test them, and evaluate them on every pull request with GitHub Actions.
 
@@ -10,9 +12,13 @@ Prompts that drive IT automation (ticket summaries, triage, Slack replies) break
 
 ## How it works
 
-```
-prompts/*.yaml ──► schema validation ──► pytest ──► offline eval ──► eval_report.md
-                                                                     └─► GitHub Pages (scheduled)
+```mermaid
+flowchart LR
+    A["prompts/*.yaml"] --> B["Schema validation"]
+    B --> C["pytest"]
+    C --> D["Offline eval"]
+    D --> E["eval_report.md<br/>(CI artifact)"]
+    D -.->|scheduled| F["GitHub Pages report"]
 ```
 
 Each prompt is a YAML file with a name, an input schema, a Jinja2 template, and test cases:
