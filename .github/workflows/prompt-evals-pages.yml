@@ -20,8 +20,20 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  # `secrets` can't be used in a job-level `if`, so check for the key in a step.
+  check-key:
+    runs-on: ubuntu-latest
+    outputs:
+      has_key: ${{ steps.check.outputs.has_key }}
+    steps:
+      - id: check
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: echo "has_key=$([ -n "$OPENAI_API_KEY" ] && echo true || echo false)" >> "$GITHUB_OUTPUT"
+
   evals:
-    if: ${{ secrets.OPENAI_API_KEY != '' }}
+    needs: check-key
+    if: needs.check-key.outputs.has_key == 'true'
     runs-on: ubuntu-latest
     env:
       OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
